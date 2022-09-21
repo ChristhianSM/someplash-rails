@@ -1,0 +1,39 @@
+<section class="section-md">
+  <div class="container">
+    <h1 class="heading mb-4">Categories</h1>
+    <%=link_to "New category", new_category_path, class: "button button--secondary button--sm mb-4 fit-content"%>
+    
+    <div class="card-list">
+      <% if @categories.length > 0  %>
+
+        <%@categories.each do |category|%>
+          <div class="category-card">
+            <%if category.cover.attached?%>
+                <%=image_tag category.cover, class: "category-card__image"%>
+            <%end%>
+            <div class="category-card__content">
+              <%=link_to category.name, category_path(category), class: "heading--sm regular"%>
+              <span class="content-sm"><%=category.photos_count%> photos</span>
+              <p><%=category.description%></p>
+            </div>
+            <div class="category-card__links">
+              <div>
+              <%= link_to image_tag("edit-button.svg", class: "button__link"), edit_category_path(category) %>
+              </div>
+              <div>
+              <%= link_to image_tag("delete-button.svg", class: "button__link"), category_path(category), data: { turbo_method: :delete, turbo_confirm: "Sure?" } %>
+              </div>
+            </div>
+          </div>
+        <%end%>
+
+      <% else %>
+
+        <div class="empty__container">
+          No Categories to show. Please add some categories 😀​📷​
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</section>

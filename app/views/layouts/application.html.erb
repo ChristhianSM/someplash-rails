@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SomesplashW9exC7Team3</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <header class="header">
+        <%= link_to image_tag("logo_somesplash.png"), categories_path %>
+        <%=link_to "Search", "/page_search", class: "button button--secondary button--sm"%>
+      </div>
+    </header>
+    <%= yield %>
+    <footer class="footer">
+      <div class="footer footer__content">
+        <h3>Build with ♥ by</h3>
+        <div class="footer--names">
+          <div class="footer__member-tag">Christhian Silupú</div>
+          <div class="footer__member-tag">David Montoya</div>
+          <div class="footer__member-tag">Dik Solis </div>
+          <div class="footer__member-tag">Felix Palacios</div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

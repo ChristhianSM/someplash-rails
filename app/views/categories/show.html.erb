@@ -1,0 +1,66 @@
+<section class="section">
+  <div class="container">
+    <h1 class="heading mb-4"><%=@category.name%></h1>
+    <p class="mb-4"><%=@category.description%></p>
+
+    <%=link_to "New photo", new_photo_path(category_id: @category.id),
+    class: "button button--secondary mb-4 button--sm fit-content" %>
+
+    <div class="flex flex-column ">
+      <% if @photos.length > 0  %>
+
+        <%@photos.each do |photo|%>
+          <div class="photo-card">
+            <%if photo.image.attached?%>
+                <%=image_tag photo.image, class: "photo-card__image"%>
+            <%end%>
+            <div class="photo-card__content">
+              <%=link_to photo.title, photo_path(photo), class: "heading--sm regular" %>
+              <div class="photo-card__base">
+                <div class="content-sm"><%=photo.comments_count%> comments</div>
+                <div class="photo-card__options">
+                  <div><%= link_to image_tag("edit-button.svg", class: "button__link"), edit_photo_path(photo, category_id: @category.id)%>
+                  </div>
+                  <div><%= link_to image_tag("delete-button.svg", class: "button__link"), photo_path(photo, category_id: @category.id), data: { turbo_method: :delete, turbo_confirm: "Sure?" } %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <%end%>
+
+        <%# -------------FORM---------------------%>
+        <%=form_with url: comments_path(category_id: @category.id), class: "flex flex-column gap-4 mb-4" do |f|%>
+          <div class="input">
+            <div class="input__container">
+              <%=f.text_area :body, class: "input__content", placeholder: "Some respectul commet here."%>
+            </div>
+          </div>
+          <%=f.submit class: "button button--secondary", value: "Comment"%>
+        <%end%>
+
+        <%# -------------COMMENTS---------------------%>
+        <p class="heading--xs regular mb-4">Comments</p>
+        <%@comments.each do |comment|%>
+        <div class="comment__container">
+          <div class="break__line"></div>
+          <p class="content-base"><%= comment.body%></p>
+          <div class="comment-options">
+          <p class="content-sm" style="color: var(--gray-200);">Send <%=time_ago_in_words(comment.created_at)%> ago</p>
+            <%= link_to image_tag("delete-button.svg", class: "button__link"), comment_path(comment, category_id: @category.id) , data: { turbo_method: :delete, turbo_confirm: "Sure?" } %>
+            </div>
+        </div>
+        <%end%> 
+
+        <%=link_to "Back to categories", categories_path%>
+      <% else %>
+
+        <div class="empty__container">
+          No photos in this category. Please add some photos 😀​📷​
+        </div>
+
+      <% end %>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,28 @@
+<section class="section">
+  <div class="container">
+    <h1 class="heading"><%=@photo.title%></h1>
+    <p><%=@photo.description%></p>
+    <p class="content-sm" style="color: var(--gray-200);">Updated at <%=time_ago_in_words(@photo.updated_at)%> ago</p>
+    <%=image_tag @photo.image, class: "photo__image" %> 
+    <%= form_with url: comments_path(photo_id: @photo.id), class: "flex flex-column gap-4 mb-4" do |f| %>
+    <div class="input">
+      <div class="input__container">
+        <%=f.text_area :body, class: "input__content"%>
+      </div>
+    </div>
+    <%=f.submit class: "button button--secondary", value: "Comment"%> 
+    <%end%>
+    <p class="heading--xs regular mb-4">Comments</p>
+    <%@comments.each do |comment|%>
+    <div class="comment__container">
+      <div class="break__line"></div>
+      <p class="content-base"><%= comment.body%></p>
+      <div class="comment-options">
+      <p class="content-sm" style="color: var(--gray-200);">Send <%= time_ago_in_words(comment.created_at)%> ago</p>
+        <%= link_to image_tag("delete-button.svg", class: "button__link"), comment_path(comment, photo_id: @photo.id) , data: { turbo_method: :delete, turbo_confirm: "Sure?" } %>
+        </div>
+    </div>
+    <%end%> 
+    <%=link_to "Back to categories", category_path(@category)%>
+  </div>
+</section>

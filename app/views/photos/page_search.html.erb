@@ -1,0 +1,47 @@
+<section class="section">
+  <div class="container">
+    <h2 class="heading mb-4">Search</h2>
+    <%=form_tag("/page_search", :method => "get", class: "flex flex-column gap-4 mb-4" ) do %>
+      <div class="input">
+        <div class= "<%= @empty ? 'border-error' : 'normal-class' %> input__container">
+          <%=text_field_tag :search, '', class: "input__content", placeholder: "Search term"%>
+        </div>        
+      </div>
+
+      <%=submit_tag "Search Photos", class: "button button--secondary"%>
+    <%end%>
+
+    <% if @empty %>
+      <p class = "center-text" > You must enter a search term </p>
+      <% else %>
+        <% if @photos_found.length.positive? %>
+          <p class = ""><%=@photos_found.length == 1 ? "#{@photos_found.length} photo found" : "#{@photos_found.length} photos found" %> </p>
+          <%@photos_found.each do |photo|%>
+            <div class="photo-card">
+              <%if photo.image.attached?%>
+                  <%=image_tag photo.image, class: "photo-card__image"%>
+              <%end%>
+              <div class="photo-card__content">
+                <%=link_to photo.title, photo_path(photo), class: "heading--sm regular" %>
+                <span class="content-sm"><%=photo.comments_count%> comments</span>
+              </div>
+              <div class="photo-card__links">
+                <div>
+                <%= link_to image_tag("edit-button.svg", class: "button__link"), edit_photo_path(photo, category_id: photo.category_id)%>
+                </div>
+                <div>
+                <%= link_to image_tag("delete-button.svg", class: "button__link"), photo_path(photo, category_id: photo.category_id), data: { turbo_method: :delete, turbo_confirm: "Sure?" } %>
+                </div>
+              </div>
+            </div>
+          <%end%>
+        
+        <% else %>
+          <% if @no_results %>
+            <p class = "center-text" > No results found, please try another search :c </p>
+          <% end %>
+        <% end %>
+    <% end %>
+    
+  </div>
+</section>

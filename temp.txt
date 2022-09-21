@@ -1,0 +1,21 @@
+
+<%@photos.each do |photo|%>
+        <div class="photo-card">
+          <%if photo.image.attached?%>
+              <%=image_tag photo.image, class: "photo-card__image"%>
+          <%end%>
+          <div class="photo-card__content">
+            <%=link_to photo.title, photo_path(photo), class: "heading--sm regular" %>
+            <span class="content-sm"><%=photo.comments_count%> photos</span>
+            <p><%=photo.description%></p>
+          </div>
+          <div class="photo-card__links">
+            <div>
+            <%= link_to image_tag("edit-button.svg", class: "button__link"), edit_photo_path(photo, category_id: @category.id) %>
+            </div>
+            <div>
+            <%= link_to image_tag("delete-button.svg", class: "button__link"), photo_path(photo, category_id: @category.id), data: { turbo_method: :delete, turbo_confirm: "Sure?" } %>
+            </div>
+          </div>
+        </div>
+      <%end%>
